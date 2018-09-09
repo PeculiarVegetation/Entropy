@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Entropy:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Entropy_jar</output-path>
+    <root id="archive" name="Entropy.jar">
+      <element id="module-output" name="Entropy" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../Java Libraries/JSON-java/json-20180813.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
