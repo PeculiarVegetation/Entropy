@@ -32,7 +32,7 @@ public class Main
 
             for(int i = 0; i < main_entropy.getCurrentPage().getNumOptions(); i++)
             {
-                System.out.println(i + ": " + main_entropy.getCurrentPage().getPage(i).getName());
+                System.out.println(i + ": " + main_entropy.getCurrentPage().getOption(i));
             }
 
             System.out.print("> ");

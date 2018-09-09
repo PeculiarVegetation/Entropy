@@ -1,12 +1,14 @@
 {
-  "name": "JSON_out.json",
+  "name": "JSON_out",
   "title": "Test",
   "options": [
     {
-      "name": "Option 1"
+      "name": "option_1",
+      "title": "Option 1"
     },
     {
-      "name": "Option 2"
+      "name": "option_2",
+      "title": "Option 2"
     }
   ],
   "contents": "Hello there!\nThis is a test.\n\tThis is a tabbed line."

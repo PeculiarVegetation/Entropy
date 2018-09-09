@@ -8,9 +8,11 @@ import java.io.*;
 public class Entropy
 {
 
-    public ArrayList<String> pages;
-    public ArrayList<Page> history;
-    public Page current_page = null;
+    public final String FILE_EXTENSION = ".json";
+
+    private ArrayList<String> pages;
+    private ArrayList<String> history;
+    private Page current_page;
 
     Entropy(String filename)
     {
@@ -26,15 +28,29 @@ public class Entropy
 
     public boolean goToOption(int option)
     {
-        if(current_page == null || option < 0 || option >= current_page.options.size())
+        if(current_page == null || option < 0 || option >= current_page.getOptions().size())
         {
             return(false);
         }
 
-        history.add(current_page);
-        current_page = current_page.getPage(option);
+        String temp_string = current_page.getOption(option) + FILE_EXTENSION;
+        JSONObject temp_JSON = readJSONFromFile(temp_string);
+
+        if(temp_JSON == null)
+        {
+            return(false);
+        }
+
+        history.add(current_page.getName());
+        current_page = loadPageFromJSON(temp_JSON);
+
 
         return(true);
+    }
+
+    public Page loadPageFromJSON(JSONObject j)
+    {
+        return(new Page(j));
     }
 
     public void writeJSONToFile(String filename, String data)
@@ -86,6 +102,7 @@ public class Entropy
         catch(Exception e)
         {
             System.out.println("Error: could not open file " + filename);
+            System.out.println(e);
             return (null);
         }
     }

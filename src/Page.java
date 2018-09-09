@@ -7,10 +7,11 @@ public class Page
 {
     public final int MAX_CONTENTS_DISPLAY_LENGTH = 32;
 
-    public String name;
-    public String title;
-    public String contents;
-    public ArrayList<String> options;
+    private String name;
+    private String title;
+    private String contents;
+    private ArrayList<String> options;
+    private ArrayList<String> option_titles;
 
 
     Page(String name, String title, String contents)
@@ -27,11 +28,12 @@ public class Page
         this.title = info.getString("title");
         this.contents = info.getString("contents");
         this.options = new ArrayList<>();
+        this.option_titles = new ArrayList<>();
         JSONArray temp_JSON_array = info.getJSONArray("options");
         for(int i = 0; i < temp_JSON_array.length(); i++)
         {
-            //this.options.add(new Page(temp_JSON_array.getJSONObject(i)));
             this.options.add(temp_JSON_array.getJSONObject(i).getString("name"));
+            this.option_titles.add(temp_JSON_array.getJSONObject(i).getString("title"));
         }
     }
 
@@ -70,7 +72,7 @@ public class Page
         return (this.options.size());
     }
 
-    public Page getPage(int i)
+    public String getOption(int i)
     {
         if(i < 0 || i >= this.options.size())
         {
@@ -80,20 +82,33 @@ public class Page
         return (this.options.get(i));
     }
 
-    public void addPage(String s)
+    public String getOptionTitle(int i)
     {
-        this.options.add(s);
-    }
-
-    public void addPages(String... sa)
-    {
-        for(int i = 0; i < sa.length; i++)
+        if(i < 0 || i >= this.option_titles.size())
         {
-            this.options.add(sa[i]);
+            return (null);
         }
+
+        return (this.option_titles.get(i));
     }
 
-    public void removePage(int i)
+    public ArrayList<String> getOptions()
+    {
+        return (this.options);
+    }
+
+    public ArrayList<String> getOptionTitles()
+    {
+        return (this.option_titles);
+    }
+
+    public void addOption(String name, String title)
+    {
+        this.options.add(name);
+        this.option_titles.add(title);
+    }
+
+    public void removeOption(int i)
     {
         if(!this.hasChildren() || i < 0 || i >= this.options.size())
         {
@@ -103,11 +118,30 @@ public class Page
         this.options.remove(i);
     }
 
+    public void removeOption(String name)
+    {
+        if(!this.hasChildren())
+        {
+            return;
+        }
+
+        for(int i = 0; i < this.options.size(); i++)
+        {
+            if(this.options.get(i).equals(name))
+            {
+                this.options.remove(i);
+                this.option_titles.remove(i);
+                return;
+            }
+        }
+
+        return;
+    }
+
     public boolean hasChildren()
     {
         return (this.options.size() > 0);
     }
-
 
     public String getJSONString()
     {
@@ -123,11 +157,13 @@ public class Page
         {
             if(i < this.options.size() - 1)
             {
-                result += this.options.get(i).getJSONString() + ",";
+                result += "{" + this.options.get(i) + ",\n";
+                result += this.option_titles.get(i) + "\n}";
             }
             else
             {
-                result += this.options.get(i).getJSONString();
+                result += "{" + this.options.get(i) + ",\n";
+                result += this.option_titles.get(i) + "\n}";
             }
         }
         result += "],";
@@ -143,6 +179,7 @@ public class Page
         return (result);
     }
 
+    /*
     public String getStructureTree()
     {
         String result = "";
@@ -194,6 +231,7 @@ public class Page
 
         return (result);
     }
+    */
 
     private String deformat(String s)
     {
