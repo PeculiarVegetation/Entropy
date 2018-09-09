@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import org.json.*;
@@ -7,12 +8,15 @@ public class Page
     public final int MAX_CONTENTS_DISPLAY_LENGTH = 32;
 
     public String name;
+    public String title;
     public String contents;
-    public ArrayList<Page> options;
+    public ArrayList<String> options;
 
-    Page(String name, String contents)
+
+    Page(String name, String title, String contents)
     {
         this.name = name;
+        this.title = title;
         this.contents = contents;
         this.options = new ArrayList<>();
     }
@@ -20,12 +24,14 @@ public class Page
     Page(JSONObject info)
     {
         this.name = info.getString("name");
+        this.title = info.getString("title");
         this.contents = info.getString("contents");
         this.options = new ArrayList<>();
         JSONArray temp_JSON_array = info.getJSONArray("options");
         for(int i = 0; i < temp_JSON_array.length(); i++)
         {
-            this.options.add(new Page(temp_JSON_array.getJSONObject(i)));
+            //this.options.add(new Page(temp_JSON_array.getJSONObject(i)));
+            this.options.add(temp_JSON_array.getJSONObject(i).getString("name"));
         }
     }
 
@@ -39,6 +45,16 @@ public class Page
         this.name = name;
     }
 
+    public String getTitle()
+    {
+        return (title);
+    }
+
+    public void setTitle(String title)
+    {
+        this.title = title;
+    }
+
     public String getContents()
     {
         return (this.contents);
@@ -49,7 +65,7 @@ public class Page
         this.contents = contents;
     }
 
-    public int getNumPages()
+    public int getNumOptions()
     {
         return (this.options.size());
     }
@@ -64,16 +80,16 @@ public class Page
         return (this.options.get(i));
     }
 
-    public void addPage(Page p)
+    public void addPage(String s)
     {
-        this.options.add(p);
+        this.options.add(s);
     }
 
-    public void addPages(Page... pages)
+    public void addPages(String... sa)
     {
-        for(int i = 0; i < pages.length; i++)
+        for(int i = 0; i < sa.length; i++)
         {
-            this.options.add(pages[i]);
+            this.options.add(sa[i]);
         }
     }
 

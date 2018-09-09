@@ -30,7 +30,7 @@ public class Main
             System.out.println(main_entropy.getCurrentPage().getContents());
             System.out.println("--------------------------------");
 
-            for(int i = 0; i < main_entropy.getCurrentPage().getNumPages(); i++)
+            for(int i = 0; i < main_entropy.getCurrentPage().getNumOptions(); i++)
             {
                 System.out.println(i + ": " + main_entropy.getCurrentPage().getPage(i).getName());
             }

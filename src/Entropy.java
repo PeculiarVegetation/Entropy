@@ -8,11 +8,14 @@ import java.io.*;
 public class Entropy
 {
 
-    public ArrayList<Page> history = new ArrayList<>();
+    public ArrayList<String> pages;
+    public ArrayList<Page> history;
     public Page current_page = null;
 
     Entropy(String filename)
     {
+        this.pages = new ArrayList<>();
+        this.history = new ArrayList<>();
         current_page = new Page(readJSONFromFile(filename));
     }
 
