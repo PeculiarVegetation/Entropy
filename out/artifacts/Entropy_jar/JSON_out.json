@@ -1,1 +1,15 @@
-ECHO is on.
+{
+  "name": "JSON_out",
+  "title": "Test",
+  "options": [
+    {
+      "name": "option_1",
+      "title": "Option 1"
+    },
+    {
+      "name": "option_2",
+      "title": "Option 2"
+    }
+  ],
+  "contents": "Hello there!\nThis is a test.\n\tThis is a tabbed line."
+}
