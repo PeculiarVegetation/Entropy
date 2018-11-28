@@ -1,20 +1,18 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 
-import java.io.*;
+import java.io.File;
 
 public class GUI extends Application
 {
 
-    Entropy main_entropy = null;
+    private Entropy main_entropy = null;
 
     public static void main(String[] args)
     {
