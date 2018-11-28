@@ -5,7 +5,7 @@ import org.json.*;
 
 public class Page
 {
-    public final int MAX_CONTENTS_DISPLAY_LENGTH = 32;
+    private final int MAX_CONTENTS_DISPLAY_LENGTH = 32;
 
     private String name;
     private String title;

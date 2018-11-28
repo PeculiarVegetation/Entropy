@@ -8,15 +8,13 @@ import java.io.*;
 public class Entropy
 {
 
-    public final String FILE_EXTENSION = ".json";
+    private final String FILE_EXTENSION = ".json";
 
-    private ArrayList<String> pages;
     private ArrayList<String> history;
     private Page current_page;
 
     Entropy(String filename)
     {
-        this.pages = new ArrayList<>();
         this.history = new ArrayList<>();
         current_page = new Page(readJSONFromFile(filename));
     }
@@ -30,7 +28,7 @@ public class Entropy
     {
         if(current_page == null || option < 0 || option >= current_page.getOptions().size())
         {
-            return(false);
+            return (false);
         }
 
         String temp_string = current_page.getOption(option) + FILE_EXTENSION;
@@ -38,19 +36,40 @@ public class Entropy
 
         if(temp_JSON == null)
         {
-            return(false);
+            return (false);
         }
 
         history.add(current_page.getName());
         current_page = loadPageFromJSON(temp_JSON);
 
 
-        return(true);
+        return (true);
+    }
+
+    public boolean goBack()
+    {
+        if(this.history.size() == 0)
+        {
+            return (false);
+        }
+
+        String temp_string = history.get(history.size() - 1) + FILE_EXTENSION;
+        JSONObject temp_JSON = readJSONFromFile(temp_string);
+
+        if(temp_JSON == null)
+        {
+            return (false);
+        }
+
+        current_page = loadPageFromJSON(temp_JSON);
+        history.remove(history.size() - 1);
+
+        return (true);
     }
 
     public Page loadPageFromJSON(JSONObject j)
     {
-        return(new Page(j));
+        return (new Page(j));
     }
 
     public void writeJSONToFile(String filename, String data)

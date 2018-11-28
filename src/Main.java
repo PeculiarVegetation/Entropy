@@ -50,7 +50,7 @@ public class Main
                 try
                 {
                     option = Integer.valueOf(user_input);
-                    
+
                     if(main_entropy.goToOption(option))
                     {
                         break;
