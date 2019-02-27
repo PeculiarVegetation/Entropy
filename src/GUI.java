@@ -9,6 +9,14 @@ import javafx.stage.Stage;
 
 import java.io.File;
 
+/*
+TODO: make this class use gui.fxml instead of just hardcoding the GUI in.
+TODO: flesh out gui.fxml.
+TODO: improve documentation of all files.
+TODO: clean up and functionalize code.
+TODO: add support for images and advanced text formatting; maybe use the WebView element and generate HTML dynamically?
+ */
+
 public class GUI extends Application
 {
 
@@ -49,12 +57,13 @@ public class GUI extends Application
         MenuItem open = new MenuItem();
         open.setText("Open");
         open.setOnAction(e -> {
-            File to_open = file_chooser.showOpenDialog(primary_stage);
+            File to_open = file_chooser.showOpenDialog(primary_stage);  //TODO: gracefully handle closing file_chooser without picking a file
 
             main_entropy = new Entropy(to_open.getAbsolutePath());
             main_text_area.setText(main_entropy.getCurrentPage().getContents());
 
-            //I'm so sorry for this
+            //TODO: improve this, somehow
+            //TODO: add support for a dynamic number of options
             if(main_entropy.getCurrentPage().getNumOptions() >= 1)
             {
                 option_1.setText(main_entropy.getCurrentPage().getOption(0));
@@ -134,7 +143,6 @@ public class GUI extends Application
                 main_entropy.goBack();
                 main_text_area.setText(main_entropy.getCurrentPage().getContents());
 
-                //I'm so sorry for this
                 if(main_entropy.getCurrentPage().getNumOptions() >= 1)
                 {
                     option_1.setText(main_entropy.getCurrentPage().getOption(0));
