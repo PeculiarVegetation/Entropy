@@ -1,0 +1,6 @@
+# Ignore idea project files/directories
+.iml
+.idea
+
+# Ignore output files/folders
+out
