@@ -18,3 +18,6 @@ Currently, Entropy reads JSON files. To get an idea for the general format these
 * Create an in-application page editing/creation tool.
 * Add support for inline images and some markup.
 * Lots more, most likely.
+
+## License
+This project is licensed under the terms of the MIT license.
