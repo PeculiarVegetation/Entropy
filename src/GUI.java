@@ -1,4 +1,6 @@
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -8,10 +10,10 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 
 /*
-TODO: make this class use gui.fxml instead of just hardcoding the GUI in.
-TODO: flesh out gui.fxml.
+TODO: make this class use gui.fxml instead of just hardcoding the GUI in. (UPDATE: perhaps not necessary, as it is easier to work with Java code than FXML and research indicates there is no real performance difference, though using FXML is technically best practice as doing so follows MVC architecture.)
 TODO: improve documentation of all files.
 TODO: clean up and functionalize code.
 TODO: add support for images and advanced text formatting; maybe use the WebView element and generate HTML dynamically?
@@ -57,56 +59,18 @@ public class GUI extends Application
         MenuItem open = new MenuItem();
         open.setText("Open");
         open.setOnAction(e -> {
-            File to_open = file_chooser.showOpenDialog(primary_stage);  //TODO: gracefully handle closing file_chooser without picking a file
+            File to_open = file_chooser.showOpenDialog(primary_stage);
+
+            if(to_open == null)  //If no file was chosen, just exit the method here.
+            {
+                return;
+            }
 
             main_entropy = new Entropy(to_open.getAbsolutePath());
             main_text_area.setText(main_entropy.getCurrentPage().getContents());
 
-            //TODO: improve this, somehow
-            //TODO: add support for a dynamic number of options
-            if(main_entropy.getCurrentPage().getNumOptions() >= 1)
-            {
-                option_1.setText(main_entropy.getCurrentPage().getOption(0));
-                option_1.setDisable(false);
-            }
-            else
-            {
-                option_1.setText("Option 1");
-                option_1.setDisable(true);
-            }
-
-            if(main_entropy.getCurrentPage().getNumOptions() >= 2)
-            {
-                option_2.setText(main_entropy.getCurrentPage().getOption(1));
-                option_2.setDisable(false);
-            }
-            else
-            {
-                option_2.setText("Option 2");
-                option_2.setDisable(true);
-            }
-
-            if(main_entropy.getCurrentPage().getNumOptions() >= 3)
-            {
-                option_3.setText(main_entropy.getCurrentPage().getOption(2));
-                option_3.setDisable(false);
-            }
-            else
-            {
-                option_3.setText("Option 3");
-                option_3.setDisable(true);
-            }
-
-            if(main_entropy.getCurrentPage().getNumOptions() >= 4)
-            {
-                option_4.setText(main_entropy.getCurrentPage().getOption(3));
-                option_4.setDisable(false);
-            }
-            else
-            {
-                option_4.setText("Option 4");
-                option_4.setDisable(true);
-            }
+            //TODO: add support for dynamic number of options
+            setOptions(main_entropy.getCurrentPage(), option_1, option_2, option_3, option_4);
         });
 
         file_menu.getItems().add(open);
@@ -218,50 +182,7 @@ public class GUI extends Application
 
                 main_text_area.setText(main_entropy.getCurrentPage().getContents());
 
-                //I'm so sorry for this
-                if(main_entropy.getCurrentPage().getNumOptions() >= 1)
-                {
-                    option_1.setText(main_entropy.getCurrentPage().getOption(0));
-                    option_1.setDisable(false);
-                }
-                else
-                {
-                    option_1.setText("Option 1");
-                    option_1.setDisable(true);
-                }
-
-                if(main_entropy.getCurrentPage().getNumOptions() >= 2)
-                {
-                    option_2.setText(main_entropy.getCurrentPage().getOption(1));
-                    option_2.setDisable(false);
-                }
-                else
-                {
-                    option_2.setText("Option 2");
-                    option_2.setDisable(true);
-                }
-
-                if(main_entropy.getCurrentPage().getNumOptions() >= 3)
-                {
-                    option_3.setText(main_entropy.getCurrentPage().getOption(2));
-                    option_3.setDisable(false);
-                }
-                else
-                {
-                    option_3.setText("Option 3");
-                    option_3.setDisable(true);
-                }
-
-                if(main_entropy.getCurrentPage().getNumOptions() >= 4)
-                {
-                    option_4.setText(main_entropy.getCurrentPage().getOption(3));
-                    option_4.setDisable(false);
-                }
-                else
-                {
-                    option_4.setText("Option 4");
-                    option_4.setDisable(true);
-                }
+                setOptions(main_entropy.getCurrentPage(), option_1, option_2, option_3, option_4);
             }
         });
 
@@ -276,50 +197,7 @@ public class GUI extends Application
 
                 main_text_area.setText(main_entropy.getCurrentPage().getContents());
 
-                //I'm so sorry for this
-                if(main_entropy.getCurrentPage().getNumOptions() >= 1)
-                {
-                    option_1.setText(main_entropy.getCurrentPage().getOption(0));
-                    option_1.setDisable(false);
-                }
-                else
-                {
-                    option_1.setText("Option 1");
-                    option_1.setDisable(true);
-                }
-
-                if(main_entropy.getCurrentPage().getNumOptions() >= 2)
-                {
-                    option_2.setText(main_entropy.getCurrentPage().getOption(1));
-                    option_2.setDisable(false);
-                }
-                else
-                {
-                    option_2.setText("Option 2");
-                    option_2.setDisable(true);
-                }
-
-                if(main_entropy.getCurrentPage().getNumOptions() >= 3)
-                {
-                    option_3.setText(main_entropy.getCurrentPage().getOption(2));
-                    option_3.setDisable(false);
-                }
-                else
-                {
-                    option_3.setText("Option 3");
-                    option_3.setDisable(true);
-                }
-
-                if(main_entropy.getCurrentPage().getNumOptions() >= 4)
-                {
-                    option_4.setText(main_entropy.getCurrentPage().getOption(3));
-                    option_4.setDisable(false);
-                }
-                else
-                {
-                    option_4.setText("Option 4");
-                    option_4.setDisable(true);
-                }
+                setOptions(main_entropy.getCurrentPage(), option_1, option_2, option_3, option_4);
             }
         });
 
@@ -334,50 +212,7 @@ public class GUI extends Application
 
                 main_text_area.setText(main_entropy.getCurrentPage().getContents());
 
-                //I'm so sorry for this
-                if(main_entropy.getCurrentPage().getNumOptions() >= 1)
-                {
-                    option_1.setText(main_entropy.getCurrentPage().getOption(0));
-                    option_1.setDisable(false);
-                }
-                else
-                {
-                    option_1.setText("Option 1");
-                    option_1.setDisable(true);
-                }
-
-                if(main_entropy.getCurrentPage().getNumOptions() >= 2)
-                {
-                    option_2.setText(main_entropy.getCurrentPage().getOption(1));
-                    option_2.setDisable(false);
-                }
-                else
-                {
-                    option_2.setText("Option 2");
-                    option_2.setDisable(true);
-                }
-
-                if(main_entropy.getCurrentPage().getNumOptions() >= 3)
-                {
-                    option_3.setText(main_entropy.getCurrentPage().getOption(2));
-                    option_3.setDisable(false);
-                }
-                else
-                {
-                    option_3.setText("Option 3");
-                    option_3.setDisable(true);
-                }
-
-                if(main_entropy.getCurrentPage().getNumOptions() >= 4)
-                {
-                    option_4.setText(main_entropy.getCurrentPage().getOption(3));
-                    option_4.setDisable(false);
-                }
-                else
-                {
-                    option_4.setText("Option 4");
-                    option_4.setDisable(true);
-                }
+                setOptions(main_entropy.getCurrentPage(), option_1, option_2, option_3, option_4);
             }
         });
 
@@ -392,50 +227,7 @@ public class GUI extends Application
 
                 main_text_area.setText(main_entropy.getCurrentPage().getContents());
 
-                //I'm so sorry for this
-                if(main_entropy.getCurrentPage().getNumOptions() >= 1)
-                {
-                    option_1.setText(main_entropy.getCurrentPage().getOption(0));
-                    option_1.setDisable(false);
-                }
-                else
-                {
-                    option_1.setText("Option 1");
-                    option_1.setDisable(true);
-                }
-
-                if(main_entropy.getCurrentPage().getNumOptions() >= 2)
-                {
-                    option_2.setText(main_entropy.getCurrentPage().getOption(1));
-                    option_2.setDisable(false);
-                }
-                else
-                {
-                    option_2.setText("Option 2");
-                    option_2.setDisable(true);
-                }
-
-                if(main_entropy.getCurrentPage().getNumOptions() >= 3)
-                {
-                    option_3.setText(main_entropy.getCurrentPage().getOption(2));
-                    option_3.setDisable(false);
-                }
-                else
-                {
-                    option_3.setText("Option 3");
-                    option_3.setDisable(true);
-                }
-
-                if(main_entropy.getCurrentPage().getNumOptions() >= 4)
-                {
-                    option_4.setText(main_entropy.getCurrentPage().getOption(3));
-                    option_4.setDisable(false);
-                }
-                else
-                {
-                    option_4.setText("Option 4");
-                    option_4.setDisable(true);
-                }
+                setOptions(main_entropy.getCurrentPage(), option_1, option_2, option_3, option_4);
             }
         });
 
@@ -449,4 +241,24 @@ public class GUI extends Application
         primary_stage.setScene(main_scene);
         primary_stage.show();
     }
+
+    private void setOptions(Page current_page, Button... options)
+    {
+        //int i = 1;
+
+        for(int i = 0; i < options.length; i++)
+        {
+            if(current_page.getNumOptions() >= i + 1)
+            {
+                options[i].setText(current_page.getOption(i));
+                options[i].setDisable(false);
+            }
+            else
+            {
+                options[i].setText("Option " + i + 1);
+                options[i].setDisable(true);
+            }
+        }
+    }
+
 }

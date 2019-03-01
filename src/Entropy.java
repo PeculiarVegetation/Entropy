@@ -7,16 +7,26 @@ import java.io.*;
 
 public class Entropy
 {
+    private char path_separator = '/';
 
     private final String FILE_EXTENSION = ".json";
 
     private ArrayList<String> history;
     private Page current_page;
+    private String current_directory = null;
 
     Entropy(String filename)
     {
         this.history = new ArrayList<>();
         current_page = new Page(readJSONFromFile(filename));
+
+        if(System.getProperty("os.name").contains("Windows"))
+        {
+            path_separator = '\\';
+        }
+
+        current_directory = new File(filename).getAbsolutePath();
+        current_directory = current_directory.substring(0, current_directory.lastIndexOf(path_separator) + 1);  //A bit of a mess, but it is necessary
     }
 
     public Page getCurrentPage()
@@ -31,7 +41,7 @@ public class Entropy
             return (false);
         }
 
-        String temp_string = current_page.getOption(option) + FILE_EXTENSION;
+        String temp_string = current_directory + current_page.getOption(option) + FILE_EXTENSION;
         JSONObject temp_JSON = readJSONFromFile(temp_string);
 
         if(temp_JSON == null)
@@ -53,7 +63,7 @@ public class Entropy
             return (false);
         }
 
-        String temp_string = history.get(history.size() - 1) + FILE_EXTENSION;
+        String temp_string = current_directory + history.get(history.size() - 1) + FILE_EXTENSION;
         JSONObject temp_JSON = readJSONFromFile(temp_string);
 
         if(temp_JSON == null)
